@@ -1,0 +1,33 @@
+
+:root{
+    --primary-color: #ffffff;
+    --active-color: #5ff59b;
+    --button-color: #328554;
+    --panel-color: #304433;
+    --sub-panel-color: #2b3a2a;
+    --border-color: #ffffff50;
+    --background-color: #282c34;
+    --text-color: #ffffff;
+    --button-execute: #5ff59b;
+    --button-stop: #ff5f5f;
+    --button-hover: #26623e;
+}
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #app {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+}
+
+p{
+    margin: 0;
+}
+
+button:hover{
+    background-color: var(--button-hover) !important;
+}
