@@ -4,7 +4,7 @@
       <div class="navbar__brand">
         <a href="https://edux.com.br" class="navbar__logo">Neander JS</a>
       </div>
-      <ul class="navbar__menu">
+      <!-- <ul class="navbar__menu">
         <li class="navbar__item">
           <button
             class="navbar__button cant"
@@ -56,10 +56,10 @@
             </ul>
           </div>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </nav>
-  <nav class="navbar sub fluid" v-show="isSubNavVisivle">
+  <!-- <nav class="navbar sub fluid" v-show="isSubNavVisivle">
     <div class="container">
       <ul class="navbar__menu" v-show="currentButton === 'step'">
         <li class="navbar__item">
@@ -107,7 +107,7 @@
         </li>
       </ul>
     </div>
-  </nav>
+  </nav> -->
 </template>
 
 <script setup>
@@ -207,21 +207,21 @@ function clearMemory() {
 
 
 
-onMounted(() => {
-  // Initialize tooltips
-  const tooltips = document.querySelectorAll('[data-toggle="tooltip"]');
-  tooltips.forEach((tooltip) => {
-    new bootstrap.Tooltip(tooltip, {
-      placement: tooltip.getAttribute("data-placement") || "top",
-    });
-  });
+// onMounted(() => {
+//   // Initialize tooltips
+//   const tooltips = document.querySelectorAll('[data-toggle="tooltip"]');
+//   tooltips.forEach((tooltip) => {
+//     new bootstrap.Tooltip(tooltip, {
+//       placement: tooltip.getAttribute("data-placement") || "top",
+//     });
+//   });
 
- // create neander window object
-  window.neander = {
-    disableNavButtons,
-    enableNavButtons
-  };   
-});
+//  // create neander window object
+//   window.neander = {
+//     disableNavButtons,
+//     enableNavButtons
+//   };   
+// });
 
 
 </script>
@@ -229,176 +229,29 @@ onMounted(() => {
 <style lang="scss" scoped>
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 1rem 0;
   background-color: var(--panel-color);
+  height: 60px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  &.sub {
-    position: fixed;
-    bottom: 0vh;
+  
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    border-top: 1px solid var(--sub-panel-color);
-    background-color: var(--panel-color);
-    height: 100px;
-    z-index: 1000;
-
-    &.active {
-      display: flex;
-    }
-
-    button {
-      background-color: var(--sub-panel-color);
-      height: fit-content;
-    }
-
-    .navbar__menu {
-      height: 100%;
-    }
-
-    .navbar__item {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  ul {
-    padding: 0;
-    margin: 0;
   }
 
   .navbar__brand {
     font-size: 1.5rem;
   }
 
-  .navbar__item.input {
-    color: var(--text-color);
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
-
-    input {
-      width: 100%;
-      outline: none;
-    }
-  }
 
   .navbar__logo {
     color: var(--text-color);
     text-decoration: none;
     font-weight: bold;
   }
-
-  .navbar__menu {
-    display: flex;
-    list-style: none;
-    gap: 1.5rem;
-  }
-
-  .dropdown {
-    height: 100%;
-  }
-
-  .navbar__button,
-  .dropdown-toggle {
-    height: 100%;
-    background-color: transparent;
-    color: var(--text-color);
-    border: none;
-    border-radius: 0.25rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    &:hover {
-      background-color: var(--button-hover);
-    }
-  }
-
-  .navbar__button i {
-    font-size: 1.2rem;
-  }
 }
 
-button.active {
-  background-color: var(--button-color) !important;
-}
-
-.cant {
-  pointer-events: none;
-  opacity: 0.3;
-}
-
-
-@media screen and (max-width: 1200px) {
-  .navbar__brand {
-    margin: 0 auto
-  }
-
-  .navbar{
-    height: 150px;
-    margin-bottom: 120px;
-  }
-  .navbar.sub{
-    top: 150px;
-    position: absolute;
-    z-index: 0;
-    margin-top: .5rem;
-  }
-    
-}
-
-@media screen and (max-width: 535px){
-    .navbar{
-        height: fit-content;
-        margin-bottom: 0;
-        .container{   
-            justify-content: center;
-            align-items: center;
-        }
-        .navbar__item{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-           
-        }
-        .navbar__brand{
-            width: 100%;
-            text-align: center;
-            margin-bottom: 1rem
-        }
-    }
-
-    .navbar.sub{
-        top:0;
-
-        position: relative;
-        z-index: 0;
-        height: fit-content;   
-      }
-
-    span, p, li, button{   
-      font-size: .8rem !important;
-    }
-    .navbar__menu{
-        display: flex;
-        flex-direction: column;
-    }
-
-}
 </style>
