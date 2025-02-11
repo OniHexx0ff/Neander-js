@@ -226,10 +226,39 @@ function _parse(str) {
     ["jn", "09"],
     ["jz", "10"],
     ["hlt", "15"],
+    ["var", "98"],
+    ["ads", "99"]
+
   ]);
+
+  let instruction_map_reversed = new Map([
+    ["00","nop"],
+    ["01","sta"],
+    ["02","lda"],
+    ["03","add"],
+    ["04","or"],
+    ["05","and"],
+    ["06","not"],
+    ["08","jmp"],
+    ["09","jn"],
+    ["10","jz"],
+    ["15","hlt"],
+    ["98","var"],
+    ["99","ads"]
+
+  ]);
+
+  let address_map = ['10', '09', '08', '01']
+  
+  let instruction_values = Array.from(instruction_map.values())
   let result = [];
+  let addresses = {};
+  let vars = {};
   let lastChar = "";
   let currentChar;
+  let error = false;
+
+
 
   for (let index = 0; index < str.length; index++) {
     currentChar = str[index];
@@ -258,11 +287,116 @@ function _parse(str) {
       .map((tk) => (instruction_map.get(tk) ? instruction_map.get(tk) : tk));
   }
 
+
+
+  for (let index = 0; index < result.length; index++ ){
+    const tk = result[index]
+    const nextTk = result[index+1]
+    const instruction = instruction_map_reversed.get(String(nextTk).padStart(2,"0"))
+    let name = "ADS"
+    if(tk == 99){
+
+      if(instruction_values.includes(nextTk)){
+        alert(`Atenção: ${name} não pode ser definido como a instrução reservada "${instruction}"  `)
+        error = true
+      }
+      else if(nextTk == null){
+        alert(`Atenção: ${name} precisa ser seguindo de um nome válido`)
+        error = true
+      }
+      else{
+          addresses[nextTk] = nextTk
+          result[index] = "X"
+          result[index+1] = "X"
+      }
+    
+    }
+    if(tk == 98){
+      // var nome endereço
+      const thirdTk = result[index+2]
+      name = "VAR"
+
+      if(instruction_values.includes(nextTk)){
+        alert(`Atenção: ${name} não pode ter como nome uma instrução reservada "${instruction}"  `)
+        error = true
+      }
+
+      else if(nextTk == null || !Number.isNaN(Number(nextTk))){
+        alert(`Atenção: ${name} precisa ter um nome válido`)
+        error = true
+      }
+      
+      else if (instruction_values.includes(thirdTk )|| !thirdTk){
+        alert(`Atenção: ${name} precisa ter um endereço válido`)
+        error = true
+      }
+
+      else if(Number(thirdTk) >= 255 || Number(thirdTk) < 0 ){
+        alert(`Atenção: ${name} só recebe valores entre 0 e 254`)
+        error = true
+      }
+      
+
+      else{
+          vars[nextTk] = thirdTk
+          result[index] = "X"
+          result[index+1] = "X"
+          result[index+2] = "X"
+      }
+
+      
+    }
+    if(error) break
+  }
+ 
+  for( let index = result.length-1; index >=0; index--){
+    if(result[index] === "X") result.splice(index,1)
+  }
+
+  if(error) return false
+
+  // tudo separado
+
+  result =  result.map(tk => {
+
+    if(vars[tk]) return vars[tk]
+    return tk
+  })
+
+
+  let removed = 0
+  result = result.map((tk, index) => {
+    if(addresses[tk]) {
+      if(!address_map.includes(result[index-1])){
+        addresses[tk] = index - removed
+        removed++
+        return 'X'
+      }
+    }
+    return tk
+  })
+
+
+  for( let index = result.length-1; index >=0; index--){
+    if(result[index] === "X") result.splice(index,1)
+  
+  }
+
+
+  result = result.map((tk) => {
+    if(addresses[tk]) {
+      return addresses[tk]
+    }
+    return tk
+  })
+
+
+
   result.forEach((el, index) => {
     result[index] = parseInt(el);
     if (isNaN(result[index])) {
-      alert(`Atenção: instrução inválida "${el}" será considerada como NOP`)
-      result[index] = "00"
+      alert(`Atenção: instrução inválida "${el}"`)
+      error = true
     }
     else if (result[index] > 255) {
       result[index] = 255
@@ -275,6 +409,7 @@ function _parse(str) {
     }
   });
 
+  if(error) return false
   nextTick(() => {
     data_ref.value.dispatchEvent(new Event("input"));
   })
@@ -344,6 +479,7 @@ function buttonStep(direction){
 function mount() {
   const tokens = _parse(editor_ref.value.code.trim());
   const htmlData = Array.from(document.querySelectorAll("input.value"));
+  if(!tokens) return
   if (tokens.length) {
     for (let index = 0; index < tokens.length; index++) {
       htmlData[index].value = tokens[index];
@@ -600,6 +736,13 @@ onMounted(() => {
         width: 50%;
         height: 100%;
         font-size: 1rem;
+     
+
+        &.indicator{
+          background-color: rgba(0,0,0,0.5);
+          position: relative;
+
+        }
       }
 
       .spacer {
