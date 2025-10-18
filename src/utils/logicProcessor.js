@@ -111,11 +111,12 @@ class Manager {
     }
 
     _check_z_n() {
-        if (this.acc >= 128) this.n = 1
+        if (this.acc >= 128 || this.acc < 0) this.n = 1
         else this.n = 0
 
         if (this.acc==0) this.z = 1
         else this.z = 0
+        console.log(this.acc)
     }
 
     _nop() {
@@ -153,6 +154,7 @@ class Manager {
 
     _not() {
         this.acc = ~this.acc
+        this._check_z_n()
         this.pc++
     }
 

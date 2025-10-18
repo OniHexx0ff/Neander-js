@@ -477,6 +477,7 @@ function buttonStep(direction){
 
 
 function mount() {
+  clearProgramMemory()
   const tokens = _parse(editor_ref.value.code.trim());
   const htmlData = Array.from(document.querySelectorAll("input.value"));
   if(!tokens) return
