@@ -1,4 +1,4 @@
-# Neander.js
+# Neander js
 
 <div align="center">
   <img src="https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue.js">
